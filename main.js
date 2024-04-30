@@ -57,11 +57,14 @@ start();
 
 function start() {
   const wallets = fs.readFileSync(path.resolve(__dirname, 'wallets.txt'), 'utf8').split(/\r?\n/);
+  let walletsIsEmpty = true;
 
   for (let line of wallets) {
     line = line.trim();
 
     if (!line || line.startsWith('#')) continue;
+
+    walletsIsEmpty = false;
 
     const [privateKey, tier, quantity] = line.split(';');
 
@@ -69,6 +72,10 @@ function start() {
       .catch((err) => {
         console.error('\x1b[31m' + err.message + '\x1b[0m');
       });
+  }
+
+  if (walletsIsEmpty) {
+    console.error('\x1b[31mNo wallets\x1b[0m');
   }
 }
 
