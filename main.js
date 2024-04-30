@@ -139,6 +139,17 @@ async function mintNode(wallet, nodeSaleContract, amount, allocation) {
     },
   );
   const populatedTx = await wallet.populateTransaction(rawTx);
+
+  if (populatedTx.gasPrice) {
+    populatedTx.gasPrice = ethers.parseUnits('1', 'gwei');
+  }
+  if (populatedTx.maxFeePerGas) {
+    populatedTx.maxFeePerGas = ethers.parseUnits('6.1', 'gwei');
+  }
+  if (populatedTx.maxPriorityFeePerGas) {
+    populatedTx.maxPriorityFeePerGas = ethers.parseUnits('6.5', 'gwei');
+  }
+
   const signedTx = await wallet.signTransaction(populatedTx);
 
   for (let attempts = 1; attempts >= 0; attempts--) {
